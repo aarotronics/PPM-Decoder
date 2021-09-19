@@ -1,3 +1,16 @@
+/*
+                                          ARDUINO PPM DECODER FOR RC
+                                 ===============================================
+   
+   This decoder uses external interrupts so pins D2 or D3 must be used in case of the ATMEGA328P. Make sure to 
+   adjust PPM_CHANNELS to the number of channels used by the system to decode.
+
+   "THE BEERWARE LICENSE" (Revision 42):
+   Aaron G. wrote this code in October 2020. As long as you retain this
+   notice, you can do whatever you want with this stuff. If we meet someday,
+   and you think this stuff is worth it, you can buy me a beer in return.
+*/
+
 #define PPM_PIN           2
 #define PPM_CHANNELS      8
 
@@ -15,20 +28,15 @@ void setup() {
 }
 
 void loop() {
-  Serial.print(channel[0]); Serial.print("\t");
-  Serial.print(channel[1]); Serial.print("\t");
-  Serial.print(channel[2]); Serial.print("\t");
-  Serial.print(channel[3]); Serial.print("\t");
-  Serial.print(channel[4]); Serial.print("\t");
-  Serial.print(channel[5]); Serial.print("\t");
-  Serial.print(channel[6]); Serial.print("\t");
-  Serial.print(channel[7]); Serial.print("\t");
+  for (int i = 0; i < PPM_CHANNELS; i++) {
+    Serial.print(channel[i]); Serial.print("\t");
+  }
   Serial.println();
   delay(10);
 }
 
 
-void readPulse() {
+void readPulse(void) {
   thisPulseTime = micros();
   if ((thisPulseTime - lastPulseTime) > 5000) {
     for (int i = 0; i < PPM_CHANNELS; i++) {
